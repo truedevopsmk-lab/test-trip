@@ -1,3 +1,8 @@
+## 📘 Navigation Menu
+[Budapest](https://truedevopsmk-lab.github.io/test-trip/./Budapest/) • [🏠 Home](https://truedevopsmk-lab.github.io/test-trip/) • [Attractions, Cafés & Local Specialties](https://truedevopsmk-lab.github.io/test-trip/./Attractions,%20Cafés%20&%20Local%20Specialties/) • [Trip Packing Checklist](https://truedevopsmk-lab.github.io/test-trip/./Trip%20Packing%20Checklist/) • [Budapest Plan](https://truedevopsmk-lab.github.io/test-trip/./Budapest-Plan/) • 
+
+---
+<!-- inject-nav -->
 # Europe Winter Trip 2025 – Attractions, Cafés & Local Food
 
 Cities:
