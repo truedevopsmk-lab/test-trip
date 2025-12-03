@@ -8,14 +8,12 @@ on:
 jobs:
   inject:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Build Navigation Menu
+      - name: Build navigation menu
         id: nav
         shell: bash
         run: |
@@ -23,19 +21,31 @@ jobs:
 
           NAV="## 📘 Navigation Menu\n"
 
-          # Find all README.md files (safe for spaces)
+          # Detect repo name for GitHub Pages links
+          REPO_NAME=$(basename "$GITHUB_REPOSITORY")
+
+          # Loop through folders containing README.md (space-safe)
           while IFS= read -r -d '' readme; do
-            folder="$(dirname "$readme")"
-            name="$(basename "$folder")"
+            folder=$(dirname "$readme")
 
-            # Pretty name (replace - with space)
-            pretty="$(echo "$name" | sed 's/-/ /g')"
+            # Skip .github folder
+            [[ "$folder" == .github* ]] && continue
 
-            # Root README
+            # Make display text
+            name=$(basename "$folder")
+            pretty=$(echo "$name" | sed 's/-/ /g')
+
+            # Create URL (GitHub Pages–friendly)
             if [[ "$folder" == "." ]]; then
-              NAV+="[🏠 Home](/README.md) • "
+              NAV+="[🏠 Home](/$REPO_NAME/) • "
             else
-              NAV+="[$pretty](/$folder/README.md) • "
+              # Remove leading "./"
+              clean="${folder#./}"
+
+              # URL encode spaces → %20
+              encoded=$(echo "$clean" | sed 's/ /%20/g')
+
+              NAV+="[$pretty](/$REPO_NAME/$encoded/) • "
             fi
 
           done < <(find . -type f -name "README.md" -print0)
@@ -46,13 +56,14 @@ jobs:
             echo "nav<<EOF"
             echo -e "$NAV"
             echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          } >> $GITHUB_OUTPUT
 
-      - name: Inject nav into README.md
+      - name: Inject menu into README.md
         shell: bash
         run: |
           NAV_CONTENT="${{ steps.nav.outputs.nav }}"
-          echo "Injecting navigation bar..."
+
+          echo "Injecting navigation..."
 
           while IFS= read -r -d '' file; do
             if grep -q "<!-- inject-nav -->" "$file"; then
@@ -65,7 +76,8 @@ jobs:
             echo -e "$NAV_CONTENT" > "$tmp"
             cat "$file" >> "$tmp"
             mv "$tmp" "$file"
-          done < <(find . -type f -name "README.md" -print0)
+
+          done < <(find . -type f -name README.md -print0)
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5

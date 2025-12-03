@@ -1,8 +1,3 @@
-## 📘 Navigation Menu
-[Budapest](/./Budapest/README.md) • [🏠 Home](/README.md) • [Attractions, Cafés & Local Specialties](/./Attractions, Cafés & Local Specialties/README.md) • [Trip Packing Checklist](/./Trip Packing Checklist/README.md) • [Budapest Plan](/./Budapest-Plan/README.md) • 
-
----
-<!-- inject-nav -->
 # Europe Winter Trip 2025 – Master Checklist
 
 **Trip dates:** 21 Dec 2025 – 31 Dec 2025  
